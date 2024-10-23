@@ -5,8 +5,13 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics, status
 from rest_framework.permissions import AllowAny
-from .serializers import GetAllDocsSerializer
+from .serializers import GetAllDocsSerializer, DoctorsCategorySerializer
 from .models import DoctorCategory, Doctors
+
+class GetCategories(generics.ListAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = DoctorsCategorySerializer
+    queryset = DoctorCategory.objects.all()
      
 class GetDoctors(generics.ListAPIView):
     permission_classes = [AllowAny]

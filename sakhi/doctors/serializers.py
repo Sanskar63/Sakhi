@@ -14,4 +14,4 @@ class GetAllDocsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Doctors
-        fields = ['id','name', 'category', 'rating', 'time_slot','picture','experience','appointment_fee','location','city', 'cities','clinic_name', 'mapLink','phone']
+        fields = ['id','name', 'category', 'rating', 'time_slot','picture','experience','appointment_fee','location', 'cities','clinic_name', 'mapLink','phone']
