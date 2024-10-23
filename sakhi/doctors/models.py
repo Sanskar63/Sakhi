@@ -29,11 +29,7 @@ class Doctors(models.Model):
     pincode = models.CharField(max_length=6, blank=True, null=True)
 
     # Store cities as a JSON-encoded string in TextField
-    cities = models.TextField(
-        blank=False,
-        default='[]',
-        help_text="Please fill this field, or your profile will not be shown to users."
-    )
+    city = models.CharField(max_length=100, blank=True, help_text="FILL IT ELSE YOU WON'T BE SEARCHED")
     
     mapLink = models.CharField(max_length=200, blank=True, null=True)
 
@@ -63,22 +59,15 @@ class Doctors(models.Model):
     def __str__(self):
         return f"{self.id} - {self.name}"
 
-    def save(self, *args, **kwargs):
-        # Ensure all cities are in lowercase before saving
-        self.cities = json.dumps([city.lower() for city in json.loads(self.cities)])
-        super().save(*args, **kwargs)
-
-    def get_cities(self):
-        """Return cities as a list."""
-        return json.loads(self.cities)
-
-    def set_cities(self, cities_list):
-        """Set cities from a list."""
-        self.cities = json.dumps(cities_list)
-
     def get_time_slot(self):
         """Return time_slot as a list."""
-        return json.loads(self.time_slot)
+        if self.time_slot:  # Check if time_slot is not empty or None
+            try:
+                return json.loads(self.time_slot)
+            except json.JSONDecodeError:
+            # Handle invalid JSON and return an empty list
+                return []
+        return []
 
     def set_time_slot(self, time_slot_list):
         """Set time_slot from a list."""

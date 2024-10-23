@@ -24,7 +24,7 @@ class GetDoctors(generics.ListAPIView):
 
         if c:
             c_lower = c.lower()
-            queryset = queryset.filter(cities__contains=[c_lower])
+            queryset = queryset.filter(city__iexact=c_lower)
 
             if not queryset.exists():
                 return Doctors.objects.none()
@@ -55,3 +55,10 @@ class GetDoctors(generics.ListAPIView):
                 'status': 400,
                 'status_text': 'error'
             }, status=400)
+
+
+class GetDoc(generics.RetrieveAPIView):
+    permission_class = [AllowAny]
+    serializer_class = GetAllDocsSerializer
+    queryset = Doctors.objects.all()
+    lookup_field = 'pk'
